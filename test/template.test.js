@@ -3,6 +3,7 @@ const {
   colorOfLightsFiveHours,
   colorOfLightsHours,
   colorOfLightsQuarterMinutes,
+  colorOfLightsMinutes,
 } = require("../src/template");
 
 describe("Berlin Clock", () => {
@@ -106,37 +107,37 @@ describe("Berlin Clock", () => {
     });
   });
   describe("Third row, third light shows between hours: 3-4, 8-9, 13-14, 17-19, 23-24", () => {
-    it("3 hours -> first and second light on", () => {
+    it("3 hours -> first, second and third light on", () => {
       expect(colorOfLightsHours(3)).toEqual("RRRO");
     });
-    it("8 hours -> first and second light on", () => {
+    it("8 hours -> first, second and third light on", () => {
       expect(colorOfLightsHours(8)).toEqual("RRRO");
     });
-    it("13 hours -> first and second light on", () => {
+    it("13 hours -> first, second and third light on", () => {
       expect(colorOfLightsHours(13)).toEqual("RRRO");
     });
-    it("18 hours -> first and second light on", () => {
+    it("18 hours -> first, second and third light on", () => {
       expect(colorOfLightsHours(18)).toEqual("RRRO");
     });
-    it("23 hours -> first and second light on", () => {
+    it("23 hours -> first, second and third light on", () => {
       expect(colorOfLightsHours(23)).toEqual("RRRO");
     });
   });
 
   describe("Third row, forth light shows on hour: 4, 9, 14, 19, 24", () => {
-    it("4 hours -> first and second light on", () => {
+    it("4 hours -> all lights turn on", () => {
       expect(colorOfLightsHours(4)).toEqual("RRRR");
     });
-    it("9 hours -> first and second light on", () => {
+    it("9 hours -> all lights turn on", () => {
       expect(colorOfLightsHours(9)).toEqual("RRRR");
     });
-    it("14 hours -> first and second light on", () => {
+    it("14 hours -> all lights turn on", () => {
       expect(colorOfLightsHours(14)).toEqual("RRRR");
     });
-    it("19 hours -> first and second light on", () => {
+    it("19 hours -> all lights turn on", () => {
       expect(colorOfLightsHours(19)).toEqual("RRRR");
     });
-    it("24 hours -> first and second light on", () => {
+    it("24 hours -> all lights turn on", () => {
       expect(colorOfLightsHours(24)).toEqual("RRRR");
     });
   });
@@ -188,6 +189,78 @@ describe("Berlin Clock", () => {
     it("eleventh light yellow when minutes >= 55", () => {
       expect(colorOfLightsQuarterMinutes(55)).toEqual("YYRYYRYYRYY");
       expect(colorOfLightsQuarterMinutes(59)).toEqual("YYRYYRYYRYY");
+    });
+  });
+
+  describe("Fifth row shows no lights every fifth minute: 0, 5, (...), 50, 55", () => {
+    it("0 minutes -> all lights off", () => {
+      expect(colorOfLightsMinutes(0)).toEqual("OOOO");
+    });
+    it("5 minutes -> all lights off", () => {
+      expect(colorOfLightsMinutes(5)).toEqual("OOOO");
+    });
+    it("50 minutes -> all lights off", () => {
+      expect(colorOfLightsMinutes(50)).toEqual("OOOO");
+    });
+    it("55 minutes -> all lights off", () => {
+      expect(colorOfLightsMinutes(55)).toEqual("OOOO");
+    });
+  });
+  describe("Fifth row, first light shows between minutes: 1-4, 6-9, (...), 51-54, 56-59", () => {
+    it("1 minute -> first light on", () => {
+      expect(colorOfLightsMinutes(1)).toEqual("ROOO");
+    });
+    it("6 minutes -> first light on", () => {
+      expect(colorOfLightsMinutes(6)).toEqual("ROOO");
+    });
+    it("51 minutes -> first light on", () => {
+      expect(colorOfLightsMinutes(51)).toEqual("ROOO");
+    });
+    it("56 minutes -> first light on", () => {
+      expect(colorOfLightsMinutes(56)).toEqual("ROOO");
+    });
+  });
+  describe("Fifth row, second light shows between minutes: 2-4, 7-9, (...), 52-54, 57-59", () => {
+    it("2 minutes -> first and second light on", () => {
+      expect(colorOfLightsMinutes(2)).toEqual("RROO");
+    });
+    it("7 minutes -> first and second light on", () => {
+      expect(colorOfLightsMinutes(7)).toEqual("RROO");
+    });
+    it("52 minutes -> first and second light on", () => {
+      expect(colorOfLightsMinutes(52)).toEqual("RROO");
+    });
+    it("57 minutes -> first and second light on", () => {
+      expect(colorOfLightsMinutes(57)).toEqual("RROO");
+    });
+  });
+  describe("Fifth row, third light shows between minutes: 3-4, 8-9, (...), 53-54, 58-59", () => {
+    it("3 minutes -> first and second light on", () => {
+      expect(colorOfLightsMinutes(3)).toEqual("RRRO");
+    });
+    it("8 minutes -> first and second light on", () => {
+      expect(colorOfLightsMinutes(8)).toEqual("RRRO");
+    });
+    it("53 minutes -> first and second light on", () => {
+      expect(colorOfLightsMinutes(53)).toEqual("RRRO");
+    });
+    it("58 minutes -> first and second light on", () => {
+      expect(colorOfLightsMinutes(58)).toEqual("RRRO");
+    });
+  });
+
+  describe("Fifth row, all four light are on, minutes: 4, 9, (...), 54, 59", () => {
+    it("4 minutes -> all lights on", () => {
+      expect(colorOfLightsMinutes(4)).toEqual("RRRR");
+    });
+    it("9 minutes -> all lights on", () => {
+      expect(colorOfLightsMinutes(9)).toEqual("RRRR");
+    });
+    it("54 minutes -> all lights on", () => {
+      expect(colorOfLightsMinutes(54)).toEqual("RRRR");
+    });
+    it("59 minutes -> all lights on", () => {
+      expect(colorOfLightsMinutes(59)).toEqual("RRRR");
     });
   });
 });

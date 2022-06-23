@@ -44,9 +44,26 @@ function colorOfLightsQuarterMinutes(minutes) {
   return output;
 }
 
+function colorOfLightsMinutes(minutes) {
+  const remainderAfterDevisionOfFive = minutes % 5;
+  switch (remainderAfterDevisionOfFive) {
+    case 0:
+      return "OOOO";
+    case 1:
+      return "ROOO";
+    case 2:
+      return "RROO";
+    case 3:
+      return "RRRO";
+    case 4:
+      return "RRRR";
+  }
+}
+
 module.exports = {
   colorOfLightSeconds,
   colorOfLightsFiveHours,
   colorOfLightsHours,
   colorOfLightsQuarterMinutes,
+  colorOfLightsMinutes,
 };

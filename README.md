@@ -1,5 +1,7 @@
 # Kata BerlinClock
 
+(Url kata)[https://www.codewars.com/kata/5a1463678ba9145a670000f9]
+
 END-TO-END
 
 Scenario 1:
@@ -165,3 +167,33 @@ UNIT TESTS
 - Fourth row shows ninth light red when minutes > 45
 - Fourth row shows tenth light yellow when minutes > 50
 - Fourth row shows eleventh light yellow when minutes > 55
+
+- Fifth row shows no lights every fifth minute: 0, 5, (...), 50, 55
+  ✔ 0 -> OOOO
+  ✔ 5 -> OOOO
+  ✔ 50 -> OOOO
+  ✔ 55 -> OOOO
+
+- Fifth row, first light shows between minutes: 1-4, 6-9, (...), 51-54, 56-59
+  ✔ 1 -> ROOO
+  ✔ 6 -> ROOO
+  ✔ 51 -> ROOO
+  ✔ 54 -> ROOO
+
+- Fifth row, second light shows between minutes: 2-4, 7-9, (...), 52-54, 57-59
+  ✔ 2 -> RROO
+  ✔ 7 -> RROO
+  ✔ 52 -> RROO
+  ✔ 57 -> RROO
+
+- Fifth row, third light shows between minutes: 3-4, 8-9, (...), 53-54, 58-59
+  ✔ 3 -> RRRO
+  ✔ 8 -> RRRO
+  ✔ 53 -> RRRO
+  ✔ 58 -> RRRO
+
+- Fifth row, all four light are on, minutes: 4, 9, (...), 54, 59
+  ✔ 4 -> RRRR
+  ✔ 9 -> RRRR
+  ✔ 54 -> RRRR
+  ✔ 59 -> RRRR
