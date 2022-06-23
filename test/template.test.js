@@ -4,6 +4,8 @@ const {
   colorOfLightsHours,
   colorOfLightsQuarterMinutes,
   colorOfLightsMinutes,
+  berlinClock,
+  validateInput,
 } = require("../src/template");
 
 describe("Berlin Clock", () => {
@@ -55,6 +57,7 @@ describe("Berlin Clock", () => {
       });
     });
   });
+
   describe("Third row shows no lights every fifth hour: 0, 5, 10, 15, 20", () => {
     it("0 hours -> all lights off", () => {
       expect(colorOfLightsHours(0)).toEqual("OOOO");
@@ -72,6 +75,7 @@ describe("Berlin Clock", () => {
       expect(colorOfLightsHours(20)).toEqual("OOOO");
     });
   });
+
   describe("Third row, first light shows between hours: 1-4, 6-9, 11-14, 15-19, 21-24", () => {
     it("1 hours -> first light on", () => {
       expect(colorOfLightsHours(1)).toEqual("ROOO");
@@ -89,6 +93,7 @@ describe("Berlin Clock", () => {
       expect(colorOfLightsHours(21)).toEqual("ROOO");
     });
   });
+
   describe("Third row, second light shows between hours: 2-4, 7-9, 12-14, 16-19, 22-24", () => {
     it("2 hours -> first and second light on", () => {
       expect(colorOfLightsHours(2)).toEqual("RROO");
@@ -106,6 +111,7 @@ describe("Berlin Clock", () => {
       expect(colorOfLightsHours(22)).toEqual("RROO");
     });
   });
+
   describe("Third row, third light shows between hours: 3-4, 8-9, 13-14, 17-19, 23-24", () => {
     it("3 hours -> first, second and third light on", () => {
       expect(colorOfLightsHours(3)).toEqual("RRRO");
@@ -141,6 +147,7 @@ describe("Berlin Clock", () => {
       expect(colorOfLightsHours(24)).toEqual("RRRR");
     });
   });
+
   describe("Fourth row shows...", () => {
     it("no lights when minutes < 5", () => {
       expect(colorOfLightsQuarterMinutes(4)).toEqual("OOOOOOOOOOO");
@@ -206,6 +213,7 @@ describe("Berlin Clock", () => {
       expect(colorOfLightsMinutes(55)).toEqual("OOOO");
     });
   });
+
   describe("Fifth row, first light shows between minutes: 1-4, 6-9, (...), 51-54, 56-59", () => {
     it("1 minute -> first light on", () => {
       expect(colorOfLightsMinutes(1)).toEqual("ROOO");
@@ -220,6 +228,7 @@ describe("Berlin Clock", () => {
       expect(colorOfLightsMinutes(56)).toEqual("ROOO");
     });
   });
+
   describe("Fifth row, second light shows between minutes: 2-4, 7-9, (...), 52-54, 57-59", () => {
     it("2 minutes -> first and second light on", () => {
       expect(colorOfLightsMinutes(2)).toEqual("RROO");
@@ -234,6 +243,7 @@ describe("Berlin Clock", () => {
       expect(colorOfLightsMinutes(57)).toEqual("RROO");
     });
   });
+
   describe("Fifth row, third light shows between minutes: 3-4, 8-9, (...), 53-54, 58-59", () => {
     it("3 minutes -> first and second light on", () => {
       expect(colorOfLightsMinutes(3)).toEqual("RRRO");
@@ -263,4 +273,121 @@ describe("Berlin Clock", () => {
       expect(colorOfLightsMinutes(59)).toEqual("RRRR");
     });
   });
+
+  describe("Component: berlin clock", () => {
+    describe("Validate time string input", () => {
+      describe("Validate string format", () => {
+        it("should return undefined if splitted string is not array", () => {
+          expect(validateInput("aa")).toEqual(undefined);
+        });
+        it("should return undefined if splitted string array length is not 3", () => {
+          expect(validateInput("11:11")).toEqual(undefined);
+          expect(validateInput("11:11:11:11")).toEqual(undefined);
+        });
+        it("should not return undefined if splitted string is array && length === 3", () => {
+          expect(validateInput("11:11:11")).toEqual({
+            hours: 11,
+            minutes: 11,
+            seconds: 11,
+          });
+        });
+      });
+      describe("Validate hours", () => {
+        it("should return undefined if hours are not numbers", () => {
+          expect(validateInput("aa:44:44")).toEqual(undefined);
+        });
+        it("should return undefined if hours are not given", () => {
+          expect(validateInput(":44:44")).toEqual(undefined);
+        });
+        it("should return undefined if hours are > 23", () => {
+          expect(validateInput("44:44:44")).toEqual(undefined);
+        });
+        it("should return object if hours are valid", () => {
+          expect(validateInput("00:44:44")).toEqual({
+            hours: 0,
+            minutes: 44,
+            seconds: 44,
+          });
+          expect(validateInput("23:44:44")).toEqual({
+            hours: 23,
+            minutes: 44,
+            seconds: 44,
+          });
+        });
+      });
+      describe("Validate minutes", () => {
+        it("should return undefined if minutes are not numbers", () => {
+          expect(validateInput("01:aa:44")).toEqual(undefined);
+        });
+        it("should return undefined if minutes are not given", () => {
+          expect(validateInput("01::44")).toEqual(undefined);
+        });
+        it("should return undefined if minutes are > 59", () => {
+          expect(validateInput("01:66:44")).toEqual(undefined);
+        });
+        it("should return object if minutes are valid", () => {
+          expect(validateInput("01:01:44")).toEqual({
+            hours: 1,
+            minutes: 1,
+            seconds: 44,
+          });
+          expect(validateInput("01:59:44")).toEqual({
+            hours: 1,
+            minutes: 59,
+            seconds: 44,
+          });
+        });
+      });
+      describe("Validate seconds", () => {
+        it("should return undefined if seconds are not numbers", () => {
+          expect(validateInput("01:01:aa")).toEqual(undefined);
+        });
+        it("should return undefined if seconds are not given", () => {
+          expect(validateInput("01:01:")).toEqual(undefined);
+        });
+        it("should return undefined if seconds are > 59", () => {
+          expect(validateInput("01:01:66")).toEqual(undefined);
+        });
+        it("should return object if seconds are valid", () => {
+          expect(validateInput("01:01:01")).toEqual({
+            hours: 1,
+            minutes: 1,
+            seconds: 1,
+          });
+          expect(validateInput("01:01:59")).toEqual({
+            hours: 1,
+            minutes: 1,
+            seconds: 59,
+          });
+        });
+      });
+    });
+    describe("String output", () => {
+      it("should output a string representation of the berlin clock time notation", () => {
+        expect(berlinClock("22:44:31")).toEqual(
+          "O\nRRRR\nRROO\nYYRYYRYYOOO\nRRRR"
+        );
+        expect(berlinClock("05:45:30")).toEqual(
+          "Y\nROOO\nOOOO\nYYRYYRYYROO\nOOOO"
+        );
+        expect(berlinClock("23:59:59")).toEqual(
+          "O\nRRRR\nRRRO\nYYRYYRYYRYY\nRRRR"
+        );
+        expect(berlinClock("00:00:00")).toEqual(
+          "Y\nOOOO\nOOOO\nOOOOOOOOOOO\nOOOO"
+        );
+      });
+      it("should output an error message when input is invalid", () => {
+        expect(berlinClock("aaa")).toEqual("Invalid time input");
+        expect(berlinClock(":44:31")).toEqual("Invalid time input");
+        expect(berlinClock("aa:44:31")).toEqual("Invalid time input");
+        expect(berlinClock("11:aa:31")).toEqual("Invalid time input");
+        expect(berlinClock("11:44:aa")).toEqual("Invalid time input");
+      });
+    });
+  });
+
+  describe("Component: hours", () => {});
+
+  describe("Component: minutes", () => {});
 });

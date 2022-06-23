@@ -1,3 +1,53 @@
+function berlinClock(timeString) {
+  let validTimes = validateInput(timeString);
+  if (!validTimes) {
+    return "Invalid time input";
+  }
+  let berlinClockOutput = "";
+  berlinClockOutput += colorOfLightSeconds(validTimes.seconds) + "\n";
+  // hours() function to test as component?
+  berlinClockOutput += colorOfLightsFiveHours(validTimes.hours) + "\n";
+  berlinClockOutput += colorOfLightsHours(validTimes.hours) + "\n";
+  // minutes() function to test as component?
+  berlinClockOutput += colorOfLightsQuarterMinutes(validTimes.minutes) + "\n";
+  berlinClockOutput += colorOfLightsMinutes(validTimes.minutes);
+  return berlinClockOutput;
+}
+
+function validateInput(timeString) {
+  let split = timeString.split(":");
+  if (!Array.isArray(split) || split.length !== 3) {
+    return undefined;
+  }
+  let hours = split[0];
+  let minutes = split[1];
+  let seconds = split[2];
+  if (!hours || hours === "" || isNaN(Number(hours)) || Number(hours) > 23) {
+    return undefined;
+  }
+  if (
+    !minutes ||
+    minutes === "" ||
+    isNaN(Number(minutes)) ||
+    Number(minutes) > 59
+  ) {
+    return undefined;
+  }
+  if (
+    !seconds ||
+    seconds === "" ||
+    isNaN(Number(seconds)) ||
+    Number(seconds) > 59
+  ) {
+    return undefined;
+  }
+  return {
+    hours: Number(hours),
+    minutes: Number(minutes),
+    seconds: Number(seconds),
+  };
+}
+
 function colorOfLightSeconds(seconds) {
   return seconds % 2 == 0 ? "Y" : "O";
 }
@@ -66,4 +116,6 @@ module.exports = {
   colorOfLightsHours,
   colorOfLightsQuarterMinutes,
   colorOfLightsMinutes,
+  validateInput,
+  berlinClock,
 };
